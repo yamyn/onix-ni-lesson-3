@@ -13,6 +13,7 @@ async function findAll(req, res, next) {
     try {
         const users = await UserService.findAll();
         res.status(200).render('index', {
+            isCreate: false,
             users,
         });
         // res.status(200).json({
@@ -74,17 +75,23 @@ async function findById(req, res, next) {
  */
 async function create(req, res, next) {
     try {
+        console.log(req.body);
         const { error } = UserValidation.create(req.body);
 
         if (error) {
             throw new ValidationError(error.details);
         }
 
-        const user = await UserService.create(req.body);
+        await UserService.create(req.body);
 
-        return res.status(200).json({
-            data: user,
+        const users = await UserService.findAll();
+        res.status(200).render('index', {
+            isCreate: true,
+            users,
         });
+        // return res.status(200).json({
+        //     data: user,
+        // });
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
