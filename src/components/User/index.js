@@ -75,7 +75,7 @@ async function findById(req, res, next) {
  */
 async function create(req, res, next) {
     try {
-        console.log(req.body);
+        console.log('POST', req.body);
         const { error } = UserValidation.create(req.body);
 
         if (error) {
@@ -120,7 +120,7 @@ async function updateById(req, res, next) {
         if (error) {
             throw new ValidationError(error.details);
         }
-        console.log(req.body);
+        console.log('PUT: ', req.body);
         const updatedUser = await UserService.updateById(req.body.id, req.body);
 
         return res.status(200).json({

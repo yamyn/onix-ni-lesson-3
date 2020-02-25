@@ -3,6 +3,7 @@ const compression = require('compression');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
+const methodOverride = require('method-override');
 
 module.exports = {
     /**
@@ -12,6 +13,7 @@ module.exports = {
      * @returns void
      */
     init(app) {
+        app.use(methodOverride('_method'));
         app.set('views', __dirname + '/..' + '/views');
         app.set('view engine', 'ejs');
         app.use(

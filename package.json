@@ -15,6 +15,7 @@
         "eslint-config-airbnb": "18.0.1",
         "express": "4.16.2",
         "helmet": "3.9.0",
+        "method-override": "^3.0.0",
         "mongoose": "5.7.5"
     },
     "devDependencies": {
