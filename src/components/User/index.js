@@ -89,9 +89,6 @@ async function create(req, res, next) {
             isCreate: true,
             users,
         });
-        // return res.status(200).json({
-        //     data: user,
-        // });
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -123,7 +120,7 @@ async function updateById(req, res, next) {
         if (error) {
             throw new ValidationError(error.details);
         }
-
+        console.log(req.body);
         const updatedUser = await UserService.updateById(req.body.id, req.body);
 
         return res.status(200).json({

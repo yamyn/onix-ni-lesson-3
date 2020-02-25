@@ -12,11 +12,9 @@ class UserValidation extends Validation {
      * @memberof UserValidation
      */
     findById(data) {
-        return this.Joi
-            .object({
-                id: this.Joi.objectId(),
-            })
-            .validate(data);
+        return this.Joi.object({
+            id: this.Joi.objectId(),
+        }).validate(data);
     }
 
     /**
@@ -26,16 +24,13 @@ class UserValidation extends Validation {
      * @memberof UserValidation
      */
     create(profile) {
-        return this.Joi
-            .object({
-                email: this.Joi.string().email(),
-                fullName: this.Joi
-                    .string()
-                    .min(1)
-                    .max(30)
-                    .required(),
-            })
-            .validate(profile);
+        return this.Joi.object({
+            email: this.Joi.string().email(),
+            fullName: this.Joi.string()
+                .min(1)
+                .max(30)
+                .required(),
+        }).validate(profile);
     }
 
     /**
@@ -45,16 +40,13 @@ class UserValidation extends Validation {
      * @memberof UserValidation
      */
     updateById(data) {
-        return this.Joi
-            .object({
-                id: this.Joi.objectId(),
-                fullName: this.Joi
-                    .string()
-                    .min(1)
-                    .max(30)
-                    .required(),
-            })
-            .validate(data);
+        return this.Joi.object({
+            id: this.Joi.objectId(),
+            fullName: this.Joi.string()
+                .min(1)
+                .max(30)
+                .required(),
+        }).validate(data);
     }
 
     /**
@@ -63,11 +55,9 @@ class UserValidation extends Validation {
      * @memberof UserValidation
      */
     deleteById(data) {
-        return this.Joi
-            .object({
-                id: this.Joi.objectId(),
-            })
-            .validate(data);
+        return this.Joi.object({
+            id: this.Joi.objectId(),
+        }).validate(data);
     }
 }
 

@@ -13,9 +13,32 @@
         <tr>
             <th scope="row"><%=i + 1%></th>
             <td><%=users[i].email %></td>
-            <td>update</td>
+            <td>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-info"
+                    data-toggle="modal"
+                    data-target="#staticBackdrop-1"
+                    name="id"
+                    value="<%=users[i].id %>"
+                    form="updateUserForm"
+                >
+                    update
+                </button>
+            </td>
             <td><%=users[i].fullName %></td>
-            <td>delete</td>
+            <td>
+                <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    data-toggle="modal"
+                    data-target="#deleteUserModal"
+                    name="id"
+                    value="<%=users[i].id %>"
+                >
+                    delete
+                </button>
+            </td>
         </tr>
 
         <%} %>
