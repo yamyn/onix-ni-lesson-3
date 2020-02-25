@@ -12,6 +12,8 @@ module.exports = {
      * @returns void
      */
     init(app) {
+        app.set('views', __dirname + '/..' + '/views');
+        app.set('view engine', 'ejs');
         app.use(
             bodyParser.urlencoded({
                 extended: true,
@@ -29,14 +31,17 @@ module.exports = {
         app.use(cors());
         // cors
         app.use((req, res, next) => {
-            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS ');
+            res.header(
+                'Access-Control-Allow-Methods',
+                'GET, POST, PUT, DELETE, OPTIONS ',
+            );
             res.header('Access-Control-Allow-Credentials', '*');
             res.header(
                 'Access-Control-Allow-Headers',
-                'Origin, X-Requested-With,'
-                + ' Content-Type, Accept,'
-                + ' Authorization,'
-                + ' Access-Control-Allow-Credentials',
+                'Origin, X-Requested-With,' +
+                    ' Content-Type, Accept,' +
+                    ' Authorization,' +
+                    ' Access-Control-Allow-Credentials',
             );
             next();
         });
