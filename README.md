@@ -1,1 +1,0 @@
-# yamyn-onix-ni-lesson-3
