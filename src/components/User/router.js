@@ -1,5 +1,11 @@
 const { Router } = require('express');
 const UserComponent = require('../User');
+// const { csrfProtection, parseForm } = require('../../config/csrfProtection');
+const csrf = require('csurf');
+const bodyParser = require('body-parser');
+
+const csrfProtection = csrf({ cookie: true });
+const parseForm = bodyParser.urlencoded({ extended: false });
 
 /**
  * Express router to mount user related functions on.
@@ -16,7 +22,7 @@ const router = Router();
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/', UserComponent.findAll);
+router.get('/', csrfProtection, UserComponent.findAll);
 
 /**
  * Route serving a user
@@ -26,7 +32,7 @@ router.get('/', UserComponent.findAll);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/:id', UserComponent.findById);
+router.get('/:id', csrfProtection, UserComponent.findById);
 
 /**
  * Route serving a new user
@@ -36,7 +42,7 @@ router.get('/:id', UserComponent.findById);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/', UserComponent.create);
+router.post('/', parseForm, csrfProtection, UserComponent.create);
 
 /**
  * Route serving a new user

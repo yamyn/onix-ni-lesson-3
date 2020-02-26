@@ -12,13 +12,11 @@ const ValidationError = require('../../error/ValidationError');
 async function findAll(req, res, next) {
     try {
         const users = await UserService.findAll();
+
         res.status(200).render('index', {
-            notify: false,
+            csrfToken: req.csrfToken(),
             users,
         });
-        // res.status(200).json({
-        //     data: users,
-        // });
     } catch (error) {
         res.status(500).json({
             error: error.message,
@@ -81,14 +79,9 @@ async function create(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const user = await UserService.create(req.body);
-        const users = await UserService.findAll();
+        await UserService.create(req.body);
 
-        res.status(200).render('index', {
-            notify: 'createUser',
-            users,
-            user,
-        });
+        res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -121,17 +114,9 @@ async function updateById(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const user = await UserService.updateById(req.body.id, req.body);
-        const users = await UserService.findAll();
+        await UserService.updateById(req.body.id, req.body);
 
-        res.status(200).render('index', {
-            notify: 'updateUser',
-            users,
-            user,
-        });
-        // return res.status(200).json({
-        //     data: updatedUser,
-        // });
+        res.redirect(301, '/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -164,17 +149,8 @@ async function deleteById(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const user = await UserService.deleteById(req.body.id);
-        const users = await UserService.findAll();
-
-        res.status(200).render('index', {
-            notify: 'deleteUser',
-            users,
-            user,
-        });
-        // return res.status(200).json({
-        //     data: deletedUser,
-        // });
+        await UserService.deleteById(req.body.id);
+        res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({

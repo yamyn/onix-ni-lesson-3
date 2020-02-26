@@ -32,10 +32,9 @@
         <div class="container">
             <h1>UsersList</h1>
             <section class="row justify-content-end p-3">
-                <%- include("./users/createUserForm.ejs") %>
+                <%- include("./users/createUserForm.ejs") %> <%-
+                include("./users/changeUser.ejs") %>
             </section>
-            <%- include("./users/notify.ejs") %> <%-
-            include("./users/changeUser.ejs") %>
             <section class="row justify-content-center">
                 <%- include("./users/table.ejs") %>
             </section>
