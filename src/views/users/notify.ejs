@@ -1,0 +1,31 @@
+<% if(notify === "createUser") {%>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong
+        >New user <%=user.fullName %> was created (with _id = <%=user.id
+        %>)!</strong
+    >
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+; <% } %> <% if(notify === "updateUser") {%>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong
+        >User <%=user.fullName %> (with _id = <%=user.id %>) has been updated
+        successfully!
+    </strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+; <% } %> <% if(notify === "deleteUser") {%>
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong
+        >User <%=user.fullName %> (with _id = <%=user.id %>) has been deleted
+        successfully!
+    </strong>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+; <% } %>

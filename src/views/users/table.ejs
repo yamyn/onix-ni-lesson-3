@@ -31,16 +31,20 @@
             </td>
             <td><%=users[i].fullName %></td>
             <td>
-                <button
-                    type="button"
+                <label
                     class="btn btn-sm btn-outline-danger"
                     data-toggle="modal"
                     data-target="#deleteUserModal"
-                    name="id"
-                    value="<%=users[i].id %>"
                 >
+                    <input
+                        class="visually-hidden"
+                        type="radio"
+                        form="deleteUserForm"
+                        name="id"
+                        value="<%=users[i].id %>"
+                    />
                     delete
-                </button>
+                </label>
             </td>
         </tr>
 

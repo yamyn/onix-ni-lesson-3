@@ -13,7 +13,7 @@ async function findAll(req, res, next) {
     try {
         const users = await UserService.findAll();
         res.status(200).render('index', {
-            isCreate: false,
+            notify: false,
             users,
         });
         // res.status(200).json({
@@ -75,19 +75,19 @@ async function findById(req, res, next) {
  */
 async function create(req, res, next) {
     try {
-        console.log('POST', req.body);
         const { error } = UserValidation.create(req.body);
 
         if (error) {
             throw new ValidationError(error.details);
         }
 
-        await UserService.create(req.body);
-
+        const user = await UserService.create(req.body);
         const users = await UserService.findAll();
+
         res.status(200).render('index', {
-            isCreate: true,
+            notify: 'createUser',
             users,
+            user,
         });
     } catch (error) {
         if (error instanceof ValidationError) {
@@ -120,12 +120,18 @@ async function updateById(req, res, next) {
         if (error) {
             throw new ValidationError(error.details);
         }
-        console.log('PUT: ', req.body);
-        const updatedUser = await UserService.updateById(req.body.id, req.body);
 
-        return res.status(200).json({
-            data: updatedUser,
+        const user = await UserService.updateById(req.body.id, req.body);
+        const users = await UserService.findAll();
+
+        res.status(200).render('index', {
+            notify: 'updateUser',
+            users,
+            user,
         });
+        // return res.status(200).json({
+        //     data: updatedUser,
+        // });
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -158,11 +164,17 @@ async function deleteById(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        const deletedUser = await UserService.deleteById(req.body.id);
+        const user = await UserService.deleteById(req.body.id);
+        const users = await UserService.findAll();
 
-        return res.status(200).json({
-            data: deletedUser,
+        res.status(200).render('index', {
+            notify: 'deleteUser',
+            users,
+            user,
         });
+        // return res.status(200).json({
+        //     data: deletedUser,
+        // });
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
