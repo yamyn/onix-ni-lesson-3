@@ -14,17 +14,20 @@
             <th scope="row"><%=i + 1%></th>
             <td><%=users[i].email %></td>
             <td>
-                <button
-                    type="button"
+                <label
                     class="btn btn-sm btn-outline-info"
                     data-toggle="modal"
                     data-target="#staticBackdrop-1"
-                    name="id"
-                    value="<%=users[i].id %>"
-                    form="updateUserForm"
                 >
+                    <input
+                        class="visually-hidden"
+                        type="radio"
+                        form="updateUserForm"
+                        name="id"
+                        value="<%=users[i].id %>"
+                    />
                     update
-                </button>
+                </label>
             </td>
             <td><%=users[i].fullName %></td>
             <td>
