@@ -19,6 +19,15 @@ const router = Router();
 router.get('/', UserComponent.findAll);
 
 /**
+ * Route serving list of users.
+ * @name /v1/users
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+router.get('/statistic', UserComponent.getStatistic);
+/**
  * Route serving a user
  * @name /v1/users/:id
  * @function

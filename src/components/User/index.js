@@ -1,6 +1,7 @@
 const UserService = require('./service');
 const UserValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
+const statisticRender = require('./statistic');
 
 /**
  * @function
@@ -16,6 +17,32 @@ async function findAll(req, res, next) {
         res.status(200).render('index', {
             csrfToken: req.csrfToken(),
             users,
+        });
+    } catch (error) {
+        res.status(500).render('errors/validError.ejs', {
+            method: 'get',
+            name: error.name,
+            message: null,
+        });
+
+        next(error);
+    }
+}
+
+/**
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise < void >}
+ */
+async function getStatistic(req, res, next) {
+    try {
+        const users = await UserService.findAll();
+        statisticRender(users);
+
+        res.status(200).render('statistic', {
+            csrfToken: req.csrfToken(),
         });
     } catch (error) {
         res.status(500).render('errors/validError.ejs', {
@@ -197,6 +224,7 @@ async function deleteById(req, res, next) {
 
 module.exports = {
     findAll,
+    getStatistic,
     findById,
     create,
     updateById,
