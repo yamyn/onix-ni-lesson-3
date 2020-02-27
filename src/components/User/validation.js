@@ -30,7 +30,9 @@ class UserValidation extends Validation {
                 .min(1)
                 .max(30)
                 .required(),
-        }).validate(profile);
+        }).validate(profile, {
+            allowUnknown: true,
+        });
     }
 
     /**
@@ -46,7 +48,7 @@ class UserValidation extends Validation {
                 .min(1)
                 .max(30)
                 .required(),
-        }).validate(data);
+        }).validate(data, { allowUnknown: true });
     }
 
     /**
@@ -57,7 +59,7 @@ class UserValidation extends Validation {
     deleteById(data) {
         return this.Joi.object({
             id: this.Joi.objectId(),
-        }).validate(data);
+        }).validate(data, { allowUnknown: true });
     }
 }
 

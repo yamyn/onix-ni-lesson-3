@@ -25,6 +25,11 @@
             </div>
             <div class="modal-body">
                 <form action="?_method=PUT" method="post" id="updateUserForm">
+                    <input
+                        type="hidden"
+                        name="_csrf"
+                        value="<%= csrfToken %>"
+                    />
                     <div class="form-group">
                         <input
                             placeholder="Full name"
@@ -75,6 +80,11 @@
                     method="post"
                     id="deleteUserForm"
                 >
+                    <input
+                        type="hidden"
+                        name="_csrf"
+                        value="<%= csrfToken %>"
+                    />
                     <button type="submit" class="btn btn-primary btn-block">
                         Yes, I`m sure
                     </button>

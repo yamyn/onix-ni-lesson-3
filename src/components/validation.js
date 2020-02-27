@@ -17,7 +17,8 @@ class Validation {
          * @type {string}
          * @memberof JoiSchema
          */
-        this.messageObjectId = 'Argument passed in must be a single String of 12 bytes or a string of 24 hex characters';
+        this.messageObjectId =
+            'Argument passed in must be a single String of 12 bytes or a string of 24 hex characters';
         this.Joi = Joi.extend({
             type: 'objectId',
             messages: {
