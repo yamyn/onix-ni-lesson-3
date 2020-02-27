@@ -16,6 +16,8 @@ async function findAll(req, res, next) {
         res.status(200).render('index', {
             csrfToken: req.csrfToken(),
             users,
+            notify: false,
+            user: false,
         });
     } catch (error) {
         res.status(500).json({
@@ -79,9 +81,15 @@ async function create(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        await UserService.create(req.body);
+        const user = await UserService.create(req.body);
 
-        res.redirect('/v1/users');
+        res.status(200).render('index', {
+            csrfToken: req.csrfToken(),
+            users: false,
+            notify: 'createUser',
+            user,
+        });
+        // res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -114,9 +122,15 @@ async function updateById(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        await UserService.updateById(req.body.id, req.body);
+        const user = await UserService.updateById(req.body.id, req.body);
 
-        res.redirect(301, '/v1/users');
+        res.status(200).render('index', {
+            csrfToken: req.csrfToken(),
+            users: false,
+            notify: 'updateUser',
+            user,
+        });
+        // res.redirect(301, '/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({
@@ -149,8 +163,15 @@ async function deleteById(req, res, next) {
             throw new ValidationError(error.details);
         }
 
-        await UserService.deleteById(req.body.id);
-        res.redirect('/v1/users');
+        const user = await UserService.deleteById(req.body.id);
+
+        res.status(200).render('index', {
+            csrfToken: req.csrfToken(),
+            users: false,
+            notify: 'deleteUser',
+            user,
+        });
+        // res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).json({

@@ -1,53 +1,59 @@
-<table class="table table-hover ">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">email</th>
-            <th scope="col"></th>
-            <th scope="col">full name</th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <% for(let i = 0; i < users.length; i +=1 ) {%>
-        <tr>
-            <th scope="row"><%=i + 1%></th>
-            <td><%=users[i].email %></td>
-            <td>
-                <label
-                    class="btn btn-sm btn-outline-info"
-                    data-toggle="modal"
-                    data-target="#staticBackdrop-1"
-                >
-                    <input
-                        class="visually-hidden"
-                        type="radio"
-                        form="updateUserForm"
-                        name="id"
-                        value="<%=users[i].id %>"
-                    />
-                    update
-                </label>
-            </td>
-            <td><%=users[i].fullName %></td>
-            <td>
-                <label
-                    class="btn btn-sm btn-outline-danger"
-                    data-toggle="modal"
-                    data-target="#deleteUserModal"
-                >
-                    <input
-                        class="visually-hidden"
-                        type="radio"
-                        form="deleteUserForm"
-                        name="id"
-                        value="<%=users[i].id %>"
-                    />
-                    delete
-                </label>
-            </td>
-        </tr>
+<h1>UsersList</h1>
+<section class="row justify-content-end p-3">
+    <%- include("./createUserForm.ejs") %> <%- include("./changeUser.ejs") %>
+</section>
+<section class="row justify-content-center">
+    <table class="table table-hover ">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">email</th>
+                <th scope="col"></th>
+                <th scope="col">full name</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(let i = 0; i < users.length; i +=1 ) {%>
+            <tr>
+                <th scope="row"><%=i + 1%></th>
+                <td><%=users[i].email %></td>
+                <td>
+                    <label
+                        class="btn btn-sm btn-outline-info"
+                        data-toggle="modal"
+                        data-target="#staticBackdrop-1"
+                    >
+                        <input
+                            class="visually-hidden"
+                            type="radio"
+                            form="updateUserForm"
+                            name="id"
+                            value="<%=users[i].id %>"
+                        />
+                        update
+                    </label>
+                </td>
+                <td><%=users[i].fullName %></td>
+                <td>
+                    <label
+                        class="btn btn-sm btn-outline-danger"
+                        data-toggle="modal"
+                        data-target="#deleteUserModal"
+                    >
+                        <input
+                            class="visually-hidden"
+                            type="radio"
+                            form="deleteUserForm"
+                            name="id"
+                            value="<%=users[i].id %>"
+                        />
+                        delete
+                    </label>
+                </td>
+            </tr>
 
-        <%} %>
-    </tbody>
-</table>
+            <%} %>
+        </tbody>
+    </table>
+</section>

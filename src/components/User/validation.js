@@ -27,7 +27,7 @@ class UserValidation extends Validation {
         return this.Joi.object({
             email: this.Joi.string().email(),
             fullName: this.Joi.string()
-                .min(1)
+                .min(3)
                 .max(30)
                 .required(),
         }).validate(profile, {

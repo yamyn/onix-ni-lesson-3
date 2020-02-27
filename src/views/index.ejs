@@ -30,14 +30,8 @@
     </head>
     <body>
         <div class="container">
-            <h1>UsersList</h1>
-            <section class="row justify-content-end p-3">
-                <%- include("./users/createUserForm.ejs") %> <%-
-                include("./users/changeUser.ejs") %>
-            </section>
-            <section class="row justify-content-center">
-                <%- include("./users/table.ejs") %>
-            </section>
+            <% if(users) {%> <%- include("./users/table.ejs") %> <% } %> <%
+            if(notify) {%> <%- include("./notify/createUser.ejs") %> <% } %>
         </div>
         <script
             src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
