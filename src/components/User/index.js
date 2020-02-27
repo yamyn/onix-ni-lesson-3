@@ -16,13 +16,12 @@ async function findAll(req, res, next) {
         res.status(200).render('index', {
             csrfToken: req.csrfToken(),
             users,
-            notify: false,
-            user: false,
         });
     } catch (error) {
-        res.status(500).json({
-            error: error.message,
-            details: null,
+        res.status(500).render('errors/validError.ejs', {
+            method: 'get',
+            name: error.name,
+            message: null,
         });
 
         next(error);
@@ -89,20 +88,21 @@ async function create(req, res, next) {
             notify: 'createUser',
             user,
         });
-        // res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).json({
-                message: error.name,
-                details: error.message,
+            return res.status(422).render('errors/validError.ejs', {
+                csrfToken: req.csrfToken(),
+                method: 'post',
+                name: error.name,
+                message: error.message[0].message,
             });
         }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
+        res.status(500).render('errors/validError.ejs', {
+            csrfToken: req.csrfToken(),
+            method: 'post',
+            name: error.name,
+            message: error.message,
         });
-
         return next(error);
     }
 }
@@ -130,18 +130,23 @@ async function updateById(req, res, next) {
             notify: 'updateUser',
             user,
         });
-        // res.redirect(301, '/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).json({
-                message: error.name,
-                details: error.message,
+            return res.status(422).render('errors/validError.ejs', {
+                csrfToken: req.csrfToken(),
+                method: 'put',
+                name: error.name,
+                message: error.message[0].message,
+                id: req.body.id,
             });
         }
 
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
+        res.status(500).render('errors/validError.ejs', {
+            csrfToken: req.csrfToken(),
+            method: 'put',
+            name: error.name,
+            message: error.message,
+            id: req.body.id,
         });
 
         return next(error);
@@ -171,18 +176,19 @@ async function deleteById(req, res, next) {
             notify: 'deleteUser',
             user,
         });
-        // res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).json({
-                message: error.name,
-                details: error.message,
+            return res.status(422).render('errors/validError.ejs', {
+                method: 'delete',
+                name: error.name,
+                message: error.message[0].message,
             });
         }
 
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
+        res.status(500).render('errors/validError.ejs', {
+            method: 'delete',
+            name: error.name,
+            message: error.message,
         });
 
         return next(error);
