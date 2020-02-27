@@ -1,15 +1,49 @@
 const moment = require('moment');
+const UserModel = require('./model');
 
-function transformUserInfo(users) {
-    const userData = {};
-    // users.reduce((acc, user) => {
-    //     if (acc !== moment(obj.dt_txt).format('dddd')) {
-    //         acc = moment(obj.dt_txt).format('dddd');
-    //         weatherAllInfoObj[`${acc}`] = [];
-    //     }
-    //     weatherAllInfoObj[`${acc}`].push(obj);
-    //     return acc;
-    // }, 0);
+async function getUserStat(dayCount) {
+    const lastMonthDay =
+        moment()
+            .utc()
+            .dayOfYear() - dayCount;
+    const userStatisticArr = await UserModel.aggregate([
+        {
+            $project: {
+                createdAt: 1,
+                dayOfYear: {
+                    $dayOfYear: '$createdAt',
+                },
+            },
+        },
+        {
+            $project: {
+                MonthDayUTC: {
+                    $dateToString: { format: '%d-%m', date: '$createdAt' },
+                },
+                dayOfYear: 1,
+                isThisMonth: { $gte: ['$dayOfYear', lastMonthDay] },
+                count: { $add: [1] },
+            },
+        },
+        { $match: { isThisMonth: true } },
+        {
+            $group: {
+                _id: '$MonthDayUTC',
+                number: { $sum: '$count' },
+            },
+        },
+    ]);
+    const userStatistic = {
+        label: [],
+        data: [],
+    };
+    userStatisticArr.map(obj => {
+        userStatistic.label.push(obj._id);
+        userStatistic.data.push(obj.number);
+        return;
+    });
+    console.log(userStatisticArr);
+    return userStatistic;
 }
 
-module.exports = transformUserInfo;
+module.exports = getUserStat;

@@ -1,7 +1,7 @@
 const UserService = require('./service');
 const UserValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
-const statisticRender = require('./statistic');
+const getUserStat = require('./statistic');
 
 /**
  * @function
@@ -38,11 +38,11 @@ async function findAll(req, res, next) {
  */
 async function getStatistic(req, res, next) {
     try {
-        const users = await UserService.findAll();
-        statisticRender(users);
+        const statistic = await getUserStat(30);
 
         res.status(200).render('statistic', {
             csrfToken: req.csrfToken(),
+            statistic,
         });
     } catch (error) {
         res.status(500).render('errors/validError.ejs', {
