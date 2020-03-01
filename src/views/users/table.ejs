@@ -14,10 +14,10 @@
             </tr>
         </thead>
         <tbody>
-            <% for(let i = 0; i < users.length; i +=1 ) {%>
+            <% users.forEach(function(user, i){ %>
             <tr>
                 <th scope="row"><%=i + 1%></th>
-                <td><%=users[i].email %></td>
+                <td><%=user.email %></td>
                 <td>
                     <label
                         class="btn btn-sm btn-outline-info"
@@ -29,12 +29,12 @@
                             type="radio"
                             form="updateUserForm"
                             name="id"
-                            value="<%=users[i].id %>"
+                            value="<%=user.id %>"
                         />
                         update
                     </label>
                 </td>
-                <td><%=users[i].fullName %></td>
+                <td><%=user.fullName %></td>
                 <td>
                     <label
                         class="btn btn-sm btn-outline-danger"
@@ -46,14 +46,13 @@
                             type="radio"
                             form="deleteUserForm"
                             name="id"
-                            value="<%=users[i].id %>"
+                            value="<%=user.id %>"
                         />
                         delete
                     </label>
                 </td>
             </tr>
-
-            <%} %>
+            <% }); %>
         </tbody>
     </table>
 </section>

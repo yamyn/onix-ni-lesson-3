@@ -1,6 +1,6 @@
 const UserService = require('./service');
 const UserValidation = require('./validation');
-const ValidationError = require('../../error/ValidationError');
+const { ValidationError, MongoError } = require('../../Error');
 const getUserStat = require('./statistic');
 
 /**
@@ -17,6 +17,8 @@ async function findAll(req, res, next) {
         res.status(200).render('index', {
             csrfToken: req.csrfToken(),
             users,
+            errors: req.flash('error'),
+            sucsess: req.flash('sucsess'),
         });
     } catch (error) {
         res.status(500).render('errors/validError.ejs', {
@@ -108,28 +110,25 @@ async function create(req, res, next) {
         }
 
         const user = await UserService.create(req.body);
-
-        res.status(200).render('index', {
-            csrfToken: req.csrfToken(),
-            users: false,
-            notify: 'createUser',
-            user,
-        });
+        req.flash('sucsess', { method: 'post', user });
+        return res.redirect('/v1/users');
+        // res.status(200).render('index', {
+        //     csrfToken: req.csrfToken(),
+        //     users: false,
+        //     notify: 'createUser',
+        //     user,
+        // });
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).render('errors/validError.ejs', {
-                csrfToken: req.csrfToken(),
-                method: 'post',
-                name: error.name,
-                message: error.message[0].message,
-            });
+            req.flash('error', error.message);
+            return res.redirect('/v1/users');
         }
-        res.status(500).render('errors/validError.ejs', {
-            csrfToken: req.csrfToken(),
-            method: 'post',
-            name: error.name,
-            message: error.message,
-        });
+        if (error.name === 'MongoError') {
+            req.flash('error', { name: error.name, message: error.errmsg });
+            return res.redirect('/v1/users');
+        }
+        req.flash('error', { name: error.name, message: error.message });
+        res.redirect('/v1/users');
         return next(error);
     }
 }
@@ -159,22 +158,12 @@ async function updateById(req, res, next) {
         });
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).render('errors/validError.ejs', {
-                csrfToken: req.csrfToken(),
-                method: 'put',
-                name: error.name,
-                message: error.message[0].message,
-                id: req.body.id,
-            });
+            req.flash('error', error.message);
+            return res.redirect('/v1/users');
         }
 
-        res.status(500).render('errors/validError.ejs', {
-            csrfToken: req.csrfToken(),
-            method: 'put',
-            name: error.name,
-            message: error.message,
-            id: req.body.id,
-        });
+        req.flash('error', { name: error.name, message: error.message });
+        res.redirect('/v1/users');
 
         return next(error);
     }
@@ -212,11 +201,8 @@ async function deleteById(req, res, next) {
             });
         }
 
-        res.status(500).render('errors/validError.ejs', {
-            method: 'delete',
-            name: error.name,
-            message: error.message,
-        });
+        req.flash('error', { name: error.name, message: error.message });
+        res.redirect('/v1/users');
 
         return next(error);
     }

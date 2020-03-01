@@ -30,8 +30,12 @@
     </head>
     <body>
         <div class="container">
-            <% if(users) {%> <%- include("./users/table.ejs") %> <% }else {%>
-            <%- include("./notify/createUser.ejs") %> <%} %>
+            <% if (typeof errors !== 'undefined') { %> <%-
+            include("./notify/error-notify.ejs") %> <% } %> <% if (typeof
+            sucsess !== 'undefined') { %> <%-
+            include("./notify/success-notify.ejs") %> <% } %> <% if(users) {%>
+            <%- include("./users/table.ejs") %> <% }else {%> <%-
+            include("./notify/createUser.ejs") %> <%} %>
         </div>
 
         <script

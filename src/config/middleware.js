@@ -1,5 +1,7 @@
 const bodyParser = require('body-parser');
 const compression = require('compression');
+const session = require('express-session');
+const flash = require('connect-flash');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -29,6 +31,19 @@ module.exports = {
         app.use(csrf({ cookie: true }));
         // returns the compression middleware
         app.use(compression());
+        //TODO
+        app.use(
+            session({
+                secret: 'RickSanchez',
+                cookie: {
+                    maxAge: 3600 * 24,
+                },
+                resave: false,
+                saveUninitialized: true,
+            }),
+        );
+        //TODO
+        app.use(flash());
         // helps you secure your Express apps by setting various HTTP headers
         app.use(helmet());
         // providing a Connect/Express middleware that
