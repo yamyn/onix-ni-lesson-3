@@ -32,17 +32,18 @@ async function getUserStat(dayCount) {
                 number: { $sum: '$count' },
             },
         },
+        { $sort: { _id: -1 } },
     ]);
     const userStatistic = {
-        label: [],
-        data: [],
+        labels: [],
+        count: [],
     };
     userStatisticArr.map(obj => {
-        userStatistic.label.push(obj._id);
-        userStatistic.data.push(obj.number);
+        userStatistic.labels.push(obj._id);
+        userStatistic.count.push(obj.number);
         return;
     });
-    console.log(userStatisticArr);
+
     return userStatistic;
 }
 

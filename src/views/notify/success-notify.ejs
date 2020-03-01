@@ -1,23 +1,20 @@
-<div class="alert-sucsess pl-3" role="alert">
-    <p>
-        <% if(sucsess.method === "post") {%>
-            <h3>Successful operation!!!</h3>
-        <strong
-            >New user <%=sucsess.user.fullName %> was created (with _id = <%=sucsess.user.id
-            %>)!</strong
-        >
-        <% } %> <% if(sucsess.method === "updateUser") {%>
-            <h3>Successful operation!!!</h3>
-        <strong
-            >User <%=sucsess.user.fullName %> (with _id = <%=sucsess.user.id %>) has been
-            updated successfully!
-        </strong>
-        <% } %> <% if(sucsess.method === "deleteUser") {%>
-            <h3>Successful operation!!!</h3>
-        <strong
-            >User <%=sucsess.user.fullName %> (with _id = <%=sucsess.user.id %>) has been
-            deleted successfully!
-        </strong>
-        <% } %>
-    </p>
+<div class="alert-success pl-3" role="alert">
+    <% successes.forEach(sucsses => { %>
+    <h3>Successful operation!!!</h3>
+    <% if(sucsses.method === "post") {%>
+    <strong
+        >New user <%=sucsses.fullName %> was created (with _id = <%=sucsses.id
+        %>)!</strong
+    >
+    <% } %> <% if(sucsses.method === "put") {%>
+    <strong
+        >User <%=sucsses.fullName %> (with _id = <%=sucsses.id %>) has been
+        updated successfully!</strong
+    >
+    <% } %> <% if(sucsses.method === "delete") {%>
+    <strong
+        >User <%=sucsses.fullName %> (with _id = <%=sucsses.id %>) has been
+        deleted successfully!</strong
+    >
+    <% } %> <% }) %>
 </div>

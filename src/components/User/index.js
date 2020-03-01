@@ -1,6 +1,6 @@
 const UserService = require('./service');
 const UserValidation = require('./validation');
-const { ValidationError, MongoError } = require('../../Error');
+const ValidationError = require('../../error/ValidationError');
 const getUserStat = require('./statistic');
 
 /**
@@ -16,9 +16,10 @@ async function findAll(req, res, next) {
 
         res.status(200).render('index', {
             csrfToken: req.csrfToken(),
+            template: 'users/table.ejs',
             users,
             errors: req.flash('error'),
-            sucsess: req.flash('sucsess'),
+            successes: req.flash('sucsess'),
         });
     } catch (error) {
         res.status(500).render('errors/validError.ejs', {
@@ -41,17 +42,16 @@ async function findAll(req, res, next) {
 async function getStatistic(req, res, next) {
     try {
         const statistic = await getUserStat(30);
-
-        res.status(200).render('statistic', {
+        res.status(200).render('index', {
             csrfToken: req.csrfToken(),
+            template: 'users/statistic.ejs',
             statistic,
+            errors: req.flash('error'),
+            successes: req.flash('sucsess'),
         });
     } catch (error) {
-        res.status(500).render('errors/validError.ejs', {
-            method: 'get',
-            name: error.name,
-            message: null,
-        });
+        req.flash('error', { name: error.name, message: error.message });
+        res.redirect('/v1/users');
 
         next(error);
     }
@@ -110,14 +110,13 @@ async function create(req, res, next) {
         }
 
         const user = await UserService.create(req.body);
-        req.flash('sucsess', { method: 'post', user });
+
+        req.flash('sucsess', {
+            method: 'post',
+            id: user.id,
+            name: user.fullName,
+        });
         return res.redirect('/v1/users');
-        // res.status(200).render('index', {
-        //     csrfToken: req.csrfToken(),
-        //     users: false,
-        //     notify: 'createUser',
-        //     user,
-        // });
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
@@ -129,7 +128,8 @@ async function create(req, res, next) {
         }
         req.flash('error', { name: error.name, message: error.message });
         res.redirect('/v1/users');
-        return next(error);
+
+        next(error);
     }
 }
 
@@ -150,12 +150,12 @@ async function updateById(req, res, next) {
 
         const user = await UserService.updateById(req.body.id, req.body);
 
-        res.status(200).render('index', {
-            csrfToken: req.csrfToken(),
-            users: false,
-            notify: 'updateUser',
-            user,
+        req.flash('sucsess', {
+            method: 'put',
+            id: user.id,
+            name: user.fullName,
         });
+        return res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
@@ -165,7 +165,7 @@ async function updateById(req, res, next) {
         req.flash('error', { name: error.name, message: error.message });
         res.redirect('/v1/users');
 
-        return next(error);
+        next(error);
     }
 }
 
@@ -186,12 +186,12 @@ async function deleteById(req, res, next) {
 
         const user = await UserService.deleteById(req.body.id);
 
-        res.status(200).render('index', {
-            csrfToken: req.csrfToken(),
-            users: false,
-            notify: 'deleteUser',
-            user,
+        req.flash('sucsess', {
+            method: 'delete',
+            id: user.id,
+            name: user.fullName,
         });
+        return res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             return res.status(422).render('errors/validError.ejs', {
@@ -204,7 +204,7 @@ async function deleteById(req, res, next) {
         req.flash('error', { name: error.name, message: error.message });
         res.redirect('/v1/users');
 
-        return next(error);
+        next(error);
     }
 }
 

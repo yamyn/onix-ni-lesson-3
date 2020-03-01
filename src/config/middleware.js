@@ -34,7 +34,7 @@ module.exports = {
         //TODO
         app.use(
             session({
-                secret: 'RickSanchez',
+                secret: 'FixicMom',
                 cookie: {
                     maxAge: 3600 * 24,
                 },
