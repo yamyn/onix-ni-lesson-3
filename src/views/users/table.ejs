@@ -32,11 +32,11 @@
                 <th scope="col"></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="userTBody">
             <% users.forEach(function(user, i){ %>
             <tr>
                 <th scope="row"><%=i + 1%></th>
-                <td><%=user.email %></td>
+                <td id="user-email"><%=user.email %></td>
                 <td>
                     <label
                         class="btn btn-sm btn-outline-info"
@@ -91,3 +91,26 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"
 ></script>
+<script>
+const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+const tBody = document.querySelector("#userTBody");
+const emailsElem = [...tBody.querySelectorAll("#user-email")];
+
+const emails = emailsElem.map(email => email.textContent);
+
+const postEmails = emails => {
+  const url = "http://localhost:3000/v1/emails";
+  const options = {
+    credentials: 'same-origin',
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "CSRF-Token": token
+    },
+    body: JSON.stringify({emails})
+  };
+  fetch(url, options).then(res => console.log(res));
+};
+
+postEmails(emails);
+</script>

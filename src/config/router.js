@@ -1,6 +1,7 @@
 const express = require('express');
 const http = require('http');
 const UserRouter = require('../components/User/router');
+const EmailListRouter = require('../components/EmailsList/router');
 
 module.exports = {
     /**
@@ -21,6 +22,16 @@ module.exports = {
          * @param {callback} middleware - Express middleware.
          */
         app.use('/v1/users', UserRouter);
+
+        /**
+         * Forwards any requests to the /v1/users URI to UserRouter.
+         * @name /v1/emails
+         * @function
+         * @inner
+         * @param {string} path - Express path
+         * @param {callback} middleware - Express middleware.
+         */
+        app.use('/v1/emails', EmailListRouter);
 
         /**
          * @description No results returned mean the object is not found
