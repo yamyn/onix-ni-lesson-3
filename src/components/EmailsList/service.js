@@ -1,25 +1,25 @@
-const emailsListModel = require('./model');
+const EmailsListModel = require('./model');
 
 /**
  * @exports
  * @method findAll
  * @param {}
  * @summary get list of all document-emails
- * @returns Promise<UserModel[]>
+ * @returns Promise<EmailsListModel[]>
  */
 function findAll() {
-    return emailsListModel.find({}).exec();
+    return EmailsListModel.find({}).exec();
 }
 
 /**
  * @exports
  * @method create
- * @param {object} emailList
- * @summary create a new user
- * @returns {Promise<UserModel>}
+ * @param {Object} emailList
+ * @summary create a new emailList
+ * @returns {Promise<EmailsListModel>}
  */
 function create(emailList) {
-    return emailsListModel.create(emailList);
+    return EmailsListModel.create(emailList);
 }
 
 module.exports = {

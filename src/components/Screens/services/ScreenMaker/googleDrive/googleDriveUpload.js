@@ -1,20 +1,14 @@
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
-
+const path = require('path');
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/drive'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
-const TOKEN_PATH = 'token.json';
-
-// Load client secrets from a local file.
-fs.readFile('credentials.json', (err, content) => {
-    if (err) return console.log('Error loading client secret file:', err);
-    // Authorize a client with credentials, then call the Google Drive API.
-    authorize(JSON.parse(content), uploadImg);
-});
+const TOKEN_PATH = path.join(__dirname, 'token.json');
+const CREDENTIALS = path.join(__dirname, 'credentials.json');
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -70,55 +64,52 @@ function getAccessToken(oAuth2Client, callback) {
 }
 
 /**
- * Lists the names and IDs of up to 10 files.
- * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
+ * @function
+ * @param {string} imgName - name for create screen in google drive
+ * @param {string} imgPath - path to current screen
+ * @param {function} getLink - callback function, that get link for access to img
+ * @returns {undefined}
  */
-// function listFiles(auth) {
-//     const drive = google.drive({ version: 'v3', auth });
-//     drive.files.list(
-//         {
-//             pageSize: 10,
-//             fields: 'nextPageToken, files(id, name)',
-//         },
-//         (err, res) => {
-//             if (err) return console.log('The API returned an error: ' + err);
-//             const files = res.data.files;
-//             if (files.length) {
-//                 console.log('Files:');
-//                 files.map(file => {
-//                     console.log(`${file.name} (${file.id})`);
-//                 });
-//             } else {
-//                 console.log('No files found.');
-//             }
-//         },
-//     );
-// }
+function postFoto(imgName, imgPath, getLink) {
+    fs.readFile(CREDENTIALS, (err, content) => {
+        if (err) return console.log('Error loading client secret file:', err);
+        // Authorize a client with credentials, then call the Google Drive API.
+        authorize(JSON.parse(content), auth => {
+            const drive = google.drive({ version: 'v3', auth });
+            const folderId = '1CuP6rNnLPzjZi3buvpyH1iE3m1X33_Yd';
 
-function uploadImg(auth) {
-    const drive = google.drive({ version: 'v3', auth });
-    // var folderId = '0BwwA4oUTeiV1TGRPeTVjaWRDY1E';
-    const fileMetadata = {
-        name: 'example.png',
-        // parents: [folderId],
-    };
-    const media = {
-        mimeType: 'image/png',
-        body: fs.createReadStream('../example.png'),
-    };
-    drive.files.create(
-        {
-            resource: fileMetadata,
-            media: media,
-            fields: 'id',
-        },
-        function(err, file) {
-            if (err) {
-                // Handle error
-                console.error(err);
-            } else {
-                console.log('File Id: ', file.id);
-            }
-        },
-    );
+            const fileMetadata = {
+                name: `${imgName}`,
+                parents: [folderId],
+            };
+            const media = {
+                mimeType: 'image/png',
+                body: fs.createReadStream(imgPath),
+            };
+            drive.files.create(
+                {
+                    resource: fileMetadata,
+                    media: media,
+                    fields: 'id',
+                },
+                async (error, res) => {
+                    try {
+                        const screenLink = `https://drive.google.com/open?id=${res.data.id}`;
+                        await getLink({ screenLink });
+                        fs.unlink(imgPath, error => {
+                            if (error) throw error;
+                            console.log(
+                                'Photo was saved in drive and link saved in db',
+                            );
+                            process.exit(0);
+                        });
+                    } catch (error) {
+                        throw error;
+                    }
+                },
+            );
+        });
+    });
 }
+
+module.exports = postFoto;

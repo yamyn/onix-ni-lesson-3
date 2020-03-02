@@ -1,7 +1,7 @@
-const UserService = require('./service');
+const UserService = require('./services/tableService');
 const UserValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
-const getUserStat = require('./statistic');
+const getUserStat = require('./services/statistic');
 
 /**
  * @function

@@ -1,10 +1,10 @@
 const { Schema } = require('mongoose');
 const connections = require('../../config/connection');
 
-const EmailsListSchema = new Schema(
+const ScreensSchema = new Schema(
     {
-        emails: {
-            type: Array,
+        screenLink: {
+            type: String,
             required: true,
         },
     },
@@ -12,9 +12,9 @@ const EmailsListSchema = new Schema(
         timestamps: true,
     },
     {
-        collection: 'emailList',
+        collection: 'screens',
         versionKey: false,
     },
 );
 
-module.exports = connections.model('EmailList', EmailsListSchema);
+module.exports = connections.model('Screens', ScreensSchema);

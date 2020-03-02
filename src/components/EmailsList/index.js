@@ -9,9 +9,9 @@ const EmailsListService = require('./service');
  */
 async function findAll(req, res, next) {
     try {
-        const users = await EmailsListService.findAll();
+        const emails = await EmailsListService.findAll();
 
-        res.status(200).json({ users });
+        res.status(200).json({ emails });
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong' });
 
@@ -29,7 +29,6 @@ async function findAll(req, res, next) {
 async function create(req, res, next) {
     try {
         EmailsListService.create(req.body);
-        console.log('work');
         res.status(200).json({ message: 'emails was saved' });
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong' });

@@ -1,6 +1,11 @@
 const moment = require('moment');
-const UserModel = require('./model');
+const UserModel = require('../model');
 
+/**
+ * @function
+ * @param {number} dayCount - count day ago
+ * @returns {object} userStatistic
+ */
 async function getUserStat(dayCount) {
     const lastMonthDay =
         moment()

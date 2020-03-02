@@ -3,7 +3,8 @@
     "version": "0.0.1",
     "main": "./src/server/index.js",
     "scripts": {
-        "start": "node src/server/index.js"
+        "start": "node src/server/index.js",
+        "screen": "node src/components/Screens/services/toMakeScreen.js"
     },
     "dependencies": {
         "@hapi/joi": "17.1.0",

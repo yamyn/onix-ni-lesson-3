@@ -4,7 +4,7 @@ const EmailListComponent = require('../EmailsList');
 const router = Router();
 
 /**
- * Route serving list of users.
+ * Route serving list of emails.
  * @name /v1/emails
  * @function
  * @inner
@@ -14,7 +14,7 @@ const router = Router();
 router.get('/', EmailListComponent.findAll);
 
 /**
- * Route serving a new user
+ * Route serving a new emailsList
  * @name /v1/emails
  * @function
  * @inner

@@ -1,5 +1,5 @@
 /* eslint-disable comma-dangle */
-const UserModel = require('./model');
+const UserModel = require('../model');
 
 /**
  * @exports
