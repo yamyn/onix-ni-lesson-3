@@ -23,7 +23,7 @@ async function getUserStat(dayCount) {
         {
             $project: {
                 MonthDayUTC: {
-                    $dateToString: { format: '%d-%m', date: '$createdAt' },
+                    $dateToString: { format: '%m-%d', date: '$createdAt' },
                 },
                 dayOfYear: 1,
                 isThisMonth: { $gte: ['$dayOfYear', lastMonthDay] },
@@ -37,7 +37,7 @@ async function getUserStat(dayCount) {
                 number: { $sum: '$count' },
             },
         },
-        { $sort: { _id: -1 } },
+        { $sort: { _id: 1, number: 1 } },
     ]);
     const userStatistic = {
         labels: [],
