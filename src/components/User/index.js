@@ -145,6 +145,7 @@ async function updateById(req, res, next) {
         const { error } = UserValidation.updateById(req.body);
 
         if (error) {
+            console.log(error);
             throw new ValidationError(error.details);
         }
 

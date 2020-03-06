@@ -1,9 +1,9 @@
 const createScreenName = require('./createScreenName');
 const makeScreen = require('./browser');
-const postImage = require('./googleDrive/googleDriveUpload');
+const imageService = require('./dropbox');
 
 module.exports = {
     createScreenName,
     makeScreen,
-    postImage,
+    imageService,
 };
